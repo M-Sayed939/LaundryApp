@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet, View, TextInput, Image, Text} from 'react-native';
+import {StyleSheet, View, TextInput, Image, Text, TouchableOpacity} from 'react-native';
 
 const LoginScreen = () => {
     const [email, setEmail] = useState('');
@@ -8,7 +8,7 @@ const LoginScreen = () => {
     return (
         <View style={[styles.container, StyleSheet.absoluteFill]}>
             <Image source={require('../../assets/logo.png')} style={styles.logo}/>
-            <Text style={styles.title}>Login</Text>
+            <Text style={styles.title}>Welcome Back!</Text>
             <TextInput
                 style={styles.input}
                 placeholder="Email"
@@ -24,6 +24,10 @@ const LoginScreen = () => {
                 onChangeText={(text) => setPassword(text)}
                 value={password}
             />
+            <Text style={styles.forgotPassword}>Forgot Password?</Text>
+            <TouchableOpacity style={styles.button}>
+                <Text style={styles.buttonText}>Button English</Text>
+            </TouchableOpacity>
         </View>
     );
 };
@@ -32,7 +36,7 @@ const styles = StyleSheet.create({
     container: {
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#f7f7f7',
+        backgroundColor: '#FFFFFF',
         paddingHorizontal: 16,
     },
     logo: {
@@ -42,9 +46,9 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 24,
-        fontWeight: 'regular',
+        fontWeight: '700',
         marginBottom: 30,
-        color: 'rgba(18,18,18,0.87)',
+        color: 'rgba(18,18,18,0.6)',
         fontFamily: 'Roboto',
     },
     input: {
@@ -58,6 +62,33 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontFamily: 'Roboto',
         color: 'rgba(0,0,0,0.6)',
+    },
+    forgotPassword: {
+        color: 'rgba(18,18,18,0.6)',
+        fontStyle: 'normal',
+        fontWeight: 600,
+        fontSize: 12,
+        lineHeight: 18,
+        textAlign: 'right',
+        fontFamily: 'Roboto',
+    },
+    button: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 16,
+        paddingHorizontal: 24,
+        gap: 8,
+        width: '100%',
+        height: 56,
+        backgroundColor: '#46CDD2',
+        borderRadius: 100,
+    },
+    buttonText: {
+        color: '#FFFFFF',
+        fontSize: 16,
+        fontWeight: 'bold',
     },
 });
 
