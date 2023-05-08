@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {StyleSheet, View, TextInput, Image, Text, TouchableOpacity} from 'react-native';
+import gmailLogo from '../../assets/icon_gmail.svg';
 
 const LoginScreen = () => {
     const [email, setEmail] = useState('');
@@ -10,7 +11,9 @@ const LoginScreen = () => {
             <Image source={require('../../assets/logo.png')} style={styles.logo}/>
             <Text style={styles.title}>Welcome Back!</Text>
             <TextInput
-                style={styles.input}
+                style={[styles.input, {
+                    marginBottom: 20,
+                }]}
                 placeholder="Email"
                 placeholderTextColor="#9b9b9b"
                 onChangeText={(text) => setEmail(text)}
@@ -24,10 +27,15 @@ const LoginScreen = () => {
                 onChangeText={(text) => setPassword(text)}
                 value={password}
             />
-            <Text style={styles.forgotPassword}>Forgot Password?</Text>
-            <TouchableOpacity style={styles.button}>
-                <Text style={styles.buttonText}>Button English</Text>
+            <TouchableOpacity style={[styles.button, {
+                marginTop: 20,
+            }]}>
+                <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>
+            <Text style={styles.forgotPassword}>Forgot Password?</Text>
+
+            <Image source={gmailLogo} style={styles.logo} />
+
         </View>
     );
 };
@@ -58,7 +66,6 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderRadius: 28,
         paddingHorizontal: 16,
-        marginBottom: 20,
         fontSize: 16,
         fontFamily: 'Roboto',
         color: 'rgba(0,0,0,0.6)',
@@ -66,10 +73,10 @@ const styles = StyleSheet.create({
     forgotPassword: {
         color: 'rgba(18,18,18,0.6)',
         fontStyle: 'normal',
-        fontWeight: 600,
+        fontWeight: 500,
         fontSize: 12,
-        lineHeight: 18,
-        textAlign: 'right',
+        marginTop: 16,
+        alignSelf: 'center',
         fontFamily: 'Roboto',
     },
     button: {
@@ -88,7 +95,7 @@ const styles = StyleSheet.create({
     buttonText: {
         color: '#FFFFFF',
         fontSize: 16,
-        fontWeight: 'bold',
+        fontWeight: '400',
     },
 });
 
