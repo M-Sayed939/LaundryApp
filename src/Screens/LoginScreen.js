@@ -8,6 +8,8 @@ import {
 } from "firebase/auth";
 import {auth} from "../firebase/firebase";
 import TextDivider from "./components/TextDivider";
+import CustomInputFiled from "./components/CustomInputField";
+import CustomButton from "./components/CustomButton";
 
 
 const LoginScreen = ({navigation}) => {
@@ -65,30 +67,22 @@ const LoginScreen = ({navigation}) => {
 
             <Text style={styles.title}>Welcome Back!</Text>
 
-            <TextInput
-                style={[styles.input, {
-                    marginBottom: 20,
-                }]}
-                placeholder="Email"
-                placeholderTextColor="#9b9b9b"
-                onChangeText={(text) => setEmail(text)}
+            <CustomInputFiled
+                style={[styles.input, {marginBottom: 20,}]}
+                placeHolder="Email"
                 value={email}
-            />
+                setValue={(text) => setEmail(text)}
+                isPassword={false}/>
 
-            <TextInput
-                style={styles.input}
-                placeholder="Password"
-                placeholderTextColor="#9b9b9b"
-                secureTextEntry={true}
-                onChangeText={(text) => setPassword(text)}
+            <CustomInputFiled
+                style={[styles.input, {marginBottom: 20,}]}
+                placeHolder="Password"
                 value={password}
-            />
+                setValue={(text) => setPassword(text)}
+                isPassword={true}/>
 
-            <TouchableOpacity style={[styles.button, {
-                marginTop: 20,
-            }]} onPress={handleLogin}>
-                <Text style={styles.buttonText}>Login</Text>
-            </TouchableOpacity>
+
+            <CustomButton text="Login" handleClick={handleLogin}/>
 
             <TouchableOpacity onPress={handleResetPassword}>
                 <Text style={styles.hintText}>Forgot Password?</Text>
@@ -135,7 +129,7 @@ const styles = StyleSheet.create({
     logo: {
         width: 150,
         height: 150,
-        marginTop:10,
+        marginTop: 10,
         marginBottom: 20,
     },
     title: {
@@ -145,17 +139,6 @@ const styles = StyleSheet.create({
         color: 'rgba(18,18,18,0.6)',
         fontFamily: 'Roboto',
     },
-    input: {
-        width: '100%',
-        height: 56,
-        borderColor: 'rgba(0,0,0,0.08)',
-        borderWidth: 2,
-        borderRadius: 28,
-        paddingHorizontal: 16,
-        fontSize: 16,
-        fontFamily: 'Roboto',
-        color: 'rgba(0,0,0,0.6)',
-    },
     hintText: {
         color: 'rgba(18,18,18,0.6)',
         fontWeight: 600,
@@ -163,24 +146,6 @@ const styles = StyleSheet.create({
         marginTop: 16,
         alignSelf: 'center',
         fontFamily: 'Roboto',
-    },
-    button: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 16,
-        paddingHorizontal: 24,
-        gap: 8,
-        width: '100%',
-        height: 56,
-        backgroundColor: '#46CDD2',
-        borderRadius: 100,
-    },
-    buttonText: {
-        color: '#FFFFFF',
-        fontSize: 16,
-        fontWeight: '400',
     },
     textClick: {
         fontFamily: 'Roboto',
