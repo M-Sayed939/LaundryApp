@@ -98,7 +98,6 @@ const LoginScreen = ({navigation}) => {
                     marginTop: 20,
                     alignSelf: 'center'
                 }}/>
-                <Text style={[styles.buttonText, {marginLeft: 8}]}>Sign in with Gmail</Text>
             </TouchableOpacity>
 
             <View style={{
