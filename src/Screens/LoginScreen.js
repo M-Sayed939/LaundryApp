@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {StyleSheet, View, TextInput, Image, Text, TouchableOpacity, Alert} from 'react-native';
+import {StyleSheet, View, Image, Text, TouchableOpacity, Alert} from 'react-native';
 import {
     signInWithEmailAndPassword,
     sendPasswordResetEmail,
