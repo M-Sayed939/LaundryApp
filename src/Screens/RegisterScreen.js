@@ -2,8 +2,8 @@ import React, {useState} from 'react';
 import {StyleSheet, View, Image, Text, Alert, ScrollView} from 'react-native';
 import {createUserWithEmailAndPassword} from "firebase/auth";
 import {auth} from "../firebase/firebase";
-import CustomInputField from "./components/CustomInputField";
-import CustomButton from "./components/CustomButton";
+import CustomInputField from "../components/CustomInputField";
+import CustomButton from "../components/CustomButton";
 
 const RegisterScreen = ({navigation}) => {
     const [name, setName] = useState('');

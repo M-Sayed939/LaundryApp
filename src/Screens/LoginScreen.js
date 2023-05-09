@@ -7,9 +7,9 @@ import {
     signInWithPopup
 } from "firebase/auth";
 import {auth, db} from "../firebase/firebase";
-import TextDivider from "./components/TextDivider";
-import CustomInputFiled from "./components/CustomInputField";
-import CustomButton from "./components/CustomButton";
+import TextDivider from "../components/TextDivider";
+import CustomInputFiled from "../components/CustomInputField";
+import CustomButton from "../components/CustomButton";
 import {doc, setDoc} from "firebase/firestore";
 
 const LoginScreen = ({navigation}) => {
