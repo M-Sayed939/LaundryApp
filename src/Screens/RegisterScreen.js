@@ -5,8 +5,7 @@ import {auth} from "../firebase/firebase";
 import CustomInputField from "./components/CustomInputField";
 import CustomButton from "./components/CustomButton";
 
-
-const RegisterScreen = () => {
+const RegisterScreen = ({ navigation }) => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -15,7 +14,7 @@ const RegisterScreen = () => {
         createUserWithEmailAndPassword(auth, email, password)
             .then((user) => {
                 console.log(user)
-                Alert.alert(user.user.email)
+                navigation.navigate('HomeScreen')
             })
             .catch((error) => {
                 console.log(error.message)
@@ -62,8 +61,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
     },
     logo: {
-        width: 100,
-        height: 100,
+        width: 150,
+        height: 150,
         marginVertical: 20,
     },
     title: {

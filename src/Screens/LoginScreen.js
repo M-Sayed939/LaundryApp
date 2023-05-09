@@ -1,55 +1,61 @@
 import React, {useState} from 'react';
 import {StyleSheet, View, TextInput, Image, Text, TouchableOpacity, Alert} from 'react-native';
-import {signInWithEmailAndPassword, getRedirectResult, GoogleAuthProvider} from "firebase/auth";
+import {
+    signInWithEmailAndPassword,
+    sendPasswordResetEmail,
+    GoogleAuthProvider,
+    signInWithPopup
+} from "firebase/auth";
 import {auth} from "../firebase/firebase";
 import TextDivider from "./components/TextDivider";
 
 
-const LoginScreen = () => {
+const LoginScreen = ({navigation}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const provider = new GoogleAuthProvider();
 
     const handleLogin = () => {
         signInWithEmailAndPassword(auth, email, password)
             .then((user) => {
                 console.log(user)
-                Alert.alert(user.user.email)
+                navigation.navigate('HomeScreen')
             })
             .catch((error) => {
                 console.log(error.message)
             });
     };
 
-    const onPressForgotPassword = () => {
-        Alert.alert('Forget Password')
+    const handleResetPassword = (email) => {
+        sendPasswordResetEmail(auth, email)
+            .then(() => {
+                Alert.alert('Password reset email sent successfully')
+            })
+            .catch((error) => {
+                console.log('Password reset email could not be sent:', error);
+            });
     };
 
     const onPressSignUp = () => {
-        Alert.alert('navigation.navigate("Register")')
-        // navigation.navigate("Register");
+        navigation.navigate("Register");
     };
 
     const handleLoginWithGoogle = () => {
-        // Alert.alert('Gmail login')
-        // auth.signInWithPopup(provider)
-        //     .then((result) => {
-        //         console.log('result', result)
-        //     })
-        //     .catch((error) => {
-        //         console.log('error', error)
-        //     })
-
-        // signInWithRedirect(auth, provider)
-        //     .then((result) => {
-        //         const credential = GoogleAuthProvider.credentialFromResult(result);
-        //         const token = credential.accessToken;
-        //         const user = result.user;
-        //     }).catch((error) => {
-        //     const errorCode = error.code;
-        //     const errorMessage = error.message;
-        //     const email = error.customData.email;
-        //     const credential = GoogleAuthProvider.credentialFromError(error);
-        // });
+        signInWithPopup(auth, provider)
+            .then((result) => {
+                const credential = GoogleAuthProvider.credentialFromResult(result);
+                const token = credential.accessToken;
+                const user = result.user;
+                // handle success
+            })
+            .catch((error) => {
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                const email = error.customData.email;
+                const credential = GoogleAuthProvider.credentialFromError(error);
+                Alert.alert(errorMessage);
+                // handle error
+            });
     };
 
     return (
@@ -83,7 +89,7 @@ const LoginScreen = () => {
                 <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={onPressForgotPassword}>
+            <TouchableOpacity onPress={handleResetPassword}>
                 <Text style={styles.hintText}>Forgot Password?</Text>
             </TouchableOpacity>
 
@@ -126,8 +132,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
     },
     logo: {
-        width: 100,
-        height: 100,
+        width: 150,
+        height: 150,
+        marginTop:10,
         marginBottom: 20,
     },
     title: {
