@@ -53,17 +53,11 @@ const LoginScreen = ({navigation}) => {
     };
 
     const handleResetPassword = () => {
-        sendPasswordResetEmail(auth, email)
-            .then(() => {
-                Alert.alert('Password reset email sent successfully')
-            })
-            .catch((error) => {
-                Alert.alert(`Password reset email could not be sent`)
-            });
+        navigation.navigate("ForgetScreen");
     };
 
     const onPressSignUp = () => {
-        navigation.navigate("Register");
+        navigation.navigate("RegisterScreen");
     };
 
     const handleLoginWithGoogle = () => {

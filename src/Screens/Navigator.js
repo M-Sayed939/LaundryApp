@@ -18,11 +18,12 @@ const Navigator = () => {
             <Stack.Navigator screenOptions={{headerShown:false}}>
                 <Stack.Screen name="LoginScreen" component={LoginScreen} />
                 <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
-                <Stack.Screen name="HomeScreen" component={HomeScreen} />
-                <Stack.Screen name="PickUpScreen" component={PickUpScreen} />
-                <Stack.Screen name="CartScreen" component={CartScreen} />
-                <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
-                <Stack.Screen name="ForgetScreen" component={ForgetScreen} />
+                {/*<Stack.Screen name="HomeScreen" component={HomeScreen} />*/}
+                {/*<Stack.Screen name="PickUpScreen" component={PickUpScreen} />*/}
+                {/*<Stack.Screen name="CartScreen" component={CartScreen} />*/}
+                {/*<Stack.Screen name="ProfileScreen" component={ProfileScreen} />*/}
+                {/*<Stack.Screen name="OrderScreen" component={OrderScreen} />*/}
+                {/*<Stack.Screen name="ForgetScreen" component={ForgetScreen} />*/}
             </Stack.Navigator>
         </NavigationContainer>
     );

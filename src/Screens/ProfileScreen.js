@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, TextInput, Alert} from 'react-native';
 // import DatePicker from 'react-native-datepicker';
-import CustomInputFiled from "../components/CustomInputFiled";
+import CustomInputFiled from "../components/CustomInputField";
 // import firebase from "firebase/compat";
 // import {firestore} from '../firebase';
 import {Share as DatePickerAndroid} from "react-native-web/src";

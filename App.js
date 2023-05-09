@@ -1,12 +1,15 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import {SafeAreaView, StyleSheet, Text, View} from 'react-native';
 import ProfileScreen from "./src/Screens/ProfileScreen";
+import ForgetScreen from "./src/Screens/ForgetScreen";
+import LoginScreen from "./src/Screens/LoginScreen";
+import Navigator from "./src/Screens/Navigator";
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <ProfileScreen/>
-    </View>
+    <SafeAreaView>
+      <Navigator/>
+    </SafeAreaView>
   );
 }
 
