@@ -1,10 +1,10 @@
-import React, {useState} from 'react';
-import {View, Text, TouchableOpacity, StyleSheet, TextInput} from 'react-native';
-import DatePicker from 'react-native-datepicker';
+import React, {useEffect, useState} from 'react';
+import {View, Text, TouchableOpacity, StyleSheet, TextInput, Alert} from 'react-native';
+// import DatePicker from 'react-native-datepicker';
 import CustomInputFiled from "../components/CustomInputFiled";
-import {firestore} from '../firebase';
-import firebase from "firebase/compat";
-
+// import firebase from "firebase/compat";
+// import {firestore} from '../firebase';
+import {Share as DatePickerAndroid} from "react-native-web/src";
 const ProfileScreen = () => {
     const [name, setName] = useState('XXXxx');
     const [email, setEmail] = useState('xxxxxx@xxx.com');
@@ -15,8 +15,56 @@ const ProfileScreen = () => {
     const handleEditPress = () => {
         setEditable(true);
     };
+    // useEffect(() => {
+    //     const userId = firebase.auth().currentUser.uid;
+    //     firebase.firestore().collection('users').doc(userId).get()
+    //         .then((doc) => {
+    //             if (doc.exists) {
+    //                 const userData = doc.data();
+    //                 setName(userData.name);
+    //                 setEmail(userData.email);
+    //                 setPhoneNumber(userData.phoneNumber);
+    //                 setBirthDate(userData.birthDate.toDate());
+    //             } else {
+    //                 console.log('No such document!');
+    //             }
+    //         })
+    //         .catch((error) => {
+    //             console.log('Error getting document:', error);
+    //         });
+    // }, []);
+    const showDatePicker = async () => {
+        try {
+            const {action, year, month, day} = await DatePickerAndroid.open({
+                date: birthDate,
+            });
+            if (action !== DatePickerAndroid.dismissedAction) {
+                const selectedDate = new Date(year, month, day);
+                setBirthDate(selectedDate);
+            }
+        } catch ({code, message}) {
+            console.warn('Cannot open date picker', message);
+        }
+    };
 
+    // const handleSavePress = async () => {
+    //     if (validateBirthdate()) {
+    //         setEditable(false);
+    //         try {
+    //             const userRef = firestore.collection('users').doc(firebase.auth.currentUser.uid);
+    //             await userRef.set({
+    //                 name, email,phoneNumber,birthdate,
+    //             });
+    //             console.log('Profile Updated Successfully <3');
+    //         } catch (error) {
+    //             console.error('Error in updating!! :',error);
+    //         }
+    //     } else {
+    //         alert('You must be at least 18 years old to use this app.');
+    //     }
+    // };
     const handleSavePress = async () => {
+                validateAge() ? saveProfile : () => Alert.alert('Age should be 18 or above.')
         if (validateBirthdate()) {
             setEditable(false);
             try {
@@ -32,16 +80,50 @@ const ProfileScreen = () => {
             alert('You must be at least 18 years old to use this app.');
         }
     };
+    // const saveProfile = () => {
+    //     const userId = firebase.auth().currentUser.uid;
+    //     const userRef = firebase.firestore().collection('users').doc(userId);
+    //     userRef.update({
+    //         name: name,
+    //         email: email,
+    //         phoneNumber: phoneNumber,
+    //         birthDate: firebase.firestore.Timestamp.fromDate(birthDate),
+    //     })
+    //         .then(() => {
+    //             Alert.alert('Profile updated successfully!');
+    //         })
+    //         .catch((error) => {
+    //             console.error('Error updating profile:', error);
+    //         });
+    // };
 
     const handleSignOutPress = () => {
-        // Implement sign out functionality here
-    };
+        firebase.auth().signOut()
+            .then(() => {
+                console.log('User signed out');
+            })
+            .catch((error) => {
+                console.error('Error signing out:', error);
+            });    };
+// const handleSignOutPress = () => {
+        // firebase.auth().signOut()
+        //     .then(() => {
+        //         console.log('User signed out');
+        //     })
+        //     .catch((error) => {
+        //         console.error('Error signing out:', error);
+        //     });
+        // };
 
-    const validateBirthdate = () => {
-        const dob = new Date(birthdate);
-        const eighteenYearsAgo = new Date();
-        eighteenYearsAgo.setFullYear(eighteenYearsAgo.getFullYear() - 18);
-        return dob <= eighteenYearsAgo;
+    const validateAge = () => {
+        const today = new Date();
+        const birthDateCopy = new Date(birthDate);
+        let age = today.getFullYear() - birthDateCopy.getFullYear();
+        const month = today.getMonth() - birthDateCopy.getMonth();
+        if (month < 0 || (month === 0 && today.getDate() < birthDateCopy.getDate())) {
+            age--;
+        }
+        return age >= 18;
     };
 
     return (
@@ -50,36 +132,32 @@ const ProfileScreen = () => {
                 <Text style={[styles.hintText , styles.alignLeft] }>Name:</Text>
                 <CustomInputFiled
                     value={name}
-                    onChangeText={setName}
+                    // onChangeText={setName}
                     editable={editable}
                     style={styles.inputField}
+                    setValue={(text) => setName(text)}
                 />
                 <Text style={[styles.hintText , styles.alignLeft] }>Email:</Text>
                 <CustomInputFiled
                     value={email}
-                    onChangeText={setEmail}
+                    // onChangeText={setEmail}
                     editable={editable}
                     style={styles.inputField}
+                    setValue={(text) => setEmail(text)}
                 />
                 <Text style={[styles.hintText , styles.alignLeft] }>Phone Number:</Text>
                 <CustomInputFiled
                     value={phoneNumber}
-                    onChangeText={setPhoneNumber}
+                    // onChangeText={setPhoneNumber}
                     editable={editable}
                     style={styles.inputField}
+                    setValue={(text) => setPhoneNumber(text)}
+                    keyboardType={"phone-pad"}
                 />
                 <Text style={[styles.hintText , styles.alignLeft] }>Birthdate:</Text>
                 {editable ? (
-                    <DatePicker
-                        date={birthdate}
-                        onDateChange={setBirthdate}
-                        mode="date"
-                        placeholder="Select date"
-                        format="MM/DD/YYYY"
-                        confirmBtnText="Confirm"
-                        cancelBtnText="Cancel"
-                        style={styles.pickerStyle}
-                    />
+
+                    <CustomInputFiled style={{borderWidth: 1, borderColor: 'gray', padding: 8, marginBottom: 8}} onPress={showDatePicker}/>
                 ) : (
                     <Text style={styles.pickerStyle}>{birthdate}</Text>
                 )}
@@ -189,7 +267,119 @@ const styles = StyleSheet.create({
         fontFamily: 'Roboto',
         color: 'rgba(0,0,0,0.6)',
     },
+    inputField: {
+        borderWidth: 1,
+        borderColor: 'gray',
+        marginBottom: 10,
+        padding: 5,
+    },
 });
 
 export default ProfileScreen;
 
+
+
+// import React, {useState, useEffect} from 'react';
+// import { View, Text, TextInput, Button, TouchableOpacity, Alert, DatePickerAndroid } from 'react-native';
+// // import firebase from 'firebase';
+//
+// const ProfileScreen = () => {
+//     const [name, setName] = useState('');
+//     const [email, setEmail] = useState('');
+//     const [phoneNumber, setPhoneNumber] = useState('');
+//     const [birthDate, setBirthDate] = useState(new Date());
+//
+//     // useEffect(() => {
+//     //     const userId = firebase.auth().currentUser.uid;
+//     //     firebase.firestore().collection('users').doc(userId).get()
+//     //         .then((doc) => {
+//     //             if (doc.exists) {
+//     //                 const userData = doc.data();
+//     //                 setName(userData.name);
+//     //                 setEmail(userData.email);
+//     //                 setPhoneNumber(userData.phoneNumber);
+//     //                 setBirthDate(userData.birthDate.toDate());
+//     //             } else {
+//     //                 console.log('No such document!');
+//     //             }
+//     //         })
+//     //         .catch((error) => {
+//     //             console.log('Error getting document:', error);
+//     //         });
+//     // }, []);
+//
+//     const showDatePicker = async () => {
+//         try {
+//             const {action, year, month, day} = await DatePickerAndroid.open({
+//                 date: birthDate,
+//             });
+//             if (action !== DatePickerAndroid.dismissedAction) {
+//                 const selectedDate = new Date(year, month, day);
+//                 setBirthDate(selectedDate);
+//             }
+//         } catch ({code, message}) {
+//             console.warn('Cannot open date picker', message);
+//         }
+//     };
+//
+//     const saveProfile = () => {
+//         // const userId = firebase.auth().currentUser.uid;
+//         // const userRef = firebase.firestore().collection('users').doc(userId);
+//         // userRef.update({
+//         //     name: name,
+//         //     email: email,
+//         //     phoneNumber: phoneNumber,
+//         //     birthDate: firebase.firestore.Timestamp.fromDate(birthDate),
+//         // })
+//         //     .then(() => {
+//         //         Alert.alert('Profile updated successfully!');
+//         //     })
+//         //     .catch((error) => {
+//         //         console.error('Error updating profile:', error);
+//         //     });
+//     };
+//
+//     const signOut = () => {
+//         // firebase.auth().signOut()
+//         //     .then(() => {
+//         //         console.log('User signed out');
+//         //     })
+//         //     .catch((error) => {
+//         //         console.error('Error signing out:', error);
+//         //     });
+//     };
+//
+//     const validateAge = () => {
+//         const today = new Date();
+//         const birthDateCopy = new Date(birthDate);
+//         let age = today.getFullYear() - birthDateCopy.getFullYear();
+//         const month = today.getMonth() - birthDateCopy.getMonth();
+//         if (month < 0 || (month === 0 && today.getDate() < birthDateCopy.getDate())) {
+//             age--;
+//         }
+//         return age >= 18;
+//     };
+//
+//     return (
+//         <View style={{flex: 1, padding: 16}}>
+//             <Text style={{fontSize: 24, fontWeight: 'bold'}}>Profile</Text>
+//             <View style={{marginTop: 16}}>
+//                 <Text>Name:</Text>
+//                 <TextInput style={{borderWidth: 1, borderColor: 'gray', padding: 8, marginBottom: 8}} value={name} onChangeText={(text) => setName(text)} />
+//                 <Text>Email:</Text>
+//                 <TextInput style={{borderWidth: 1, borderColor: 'gray', padding: 8, marginBottom: 8}} value={email} onChangeText={(text) => setEmail(text)} />
+//                 <Text>Phone Number:</Text>
+//                 <TextInput style={{borderWidth: 1, borderColor: 'gray', padding: 8, marginBottom: 8}} value={phoneNumber} onChangeText={(text) => setPhoneNumber(text
+//                 )} keyboardType="phone-pad" />
+//                 <Text>Birth Date:</Text>
+//                 <TouchableOpacity style={{borderWidth: 1, borderColor: 'gray', padding: 8, marginBottom: 8}} onPress={showDatePicker}>
+//                     <Text>{birthDate.toDateString()}</Text>
+//                 </TouchableOpacity>
+//                 <Button title="Edit/Save" onPress={validateAge() ? saveProfile : () => Alert.alert('Age should be 18 or above.')} />
+//             </View>
+//             <View style={{flex: 1, justifyContent: 'flex-end', marginBottom: 16}}>
+//                 <Button title="Sign Out" onPress={signOut} />
+//             </View>
+//         </View>
+//     );
+// };
