@@ -1,7 +1,7 @@
-//87101726134-ujmutbrb5n2h7mfb6cpupm5vna9emdlo.apps.googleusercontent.com
-//
-import { initializeApp } from "firebase/app";
+import {initializeApp} from "firebase/app";
 import {getAuth, GoogleAuthProvider} from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
+
 
 const firebaseConfig = {
     apiKey: "AIzaSyArh8ri99P7IfzgC43s0rqq2UOJmg1iMuw",
@@ -13,5 +13,6 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-export const provider = new GoogleAuthProvider();
 export const auth = getAuth(app);
+export const db = getFirestore(app);
+export const provider = new GoogleAuthProvider(app);
