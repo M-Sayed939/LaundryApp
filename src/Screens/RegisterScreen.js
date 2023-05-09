@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
-import {StyleSheet, View, TextInput, Image, Text, TouchableOpacity, Alert} from 'react-native';
-import {signInWithEmailAndPassword, getRedirectResult, GoogleAuthProvider} from "firebase/auth";
+import {StyleSheet, View, Image, Text, Alert} from 'react-native';
+import {createUserWithEmailAndPassword} from "firebase/auth";
 import {auth} from "../firebase/firebase";
-import TextDivider from "./components/TextDivider";
 import CustomInputField from "./components/CustomInputField";
+import CustomButton from "./components/CustomButton";
 
 
 const RegisterScreen = () => {
@@ -11,8 +11,8 @@ const RegisterScreen = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleLogin = () => {
-        signInWithEmailAndPassword(auth, email, password)
+    const handelSignUp = () => {
+        createUserWithEmailAndPassword(auth, email, password)
             .then((user) => {
                 console.log(user)
                 Alert.alert(user.user.email)
@@ -22,38 +22,6 @@ const RegisterScreen = () => {
             });
     };
 
-    const onPressForgotPassword = () => {
-        Alert.alert('Forget Password')
-    };
-
-    const onPressSignUp = () => {
-        Alert.alert('navigation.navigate("Register")')
-        // navigation.navigate("Register");
-    };
-
-    const handleLoginWithGoogle = () => {
-        // Alert.alert('Gmail login')
-        // auth.signInWithPopup(provider)
-        //     .then((result) => {
-        //         console.log('result', result)
-        //     })
-        //     .catch((error) => {
-        //         console.log('error', error)
-        //     })
-
-        // signInWithRedirect(auth, provider)
-        //     .then((result) => {
-        //         const credential = GoogleAuthProvider.credentialFromResult(result);
-        //         const token = credential.accessToken;
-        //         const user = result.user;
-        //     }).catch((error) => {
-        //     const errorCode = error.code;
-        //     const errorMessage = error.message;
-        //     const email = error.customData.email;
-        //     const credential = GoogleAuthProvider.credentialFromError(error);
-        // });
-    };
-
     return (
         <View style={[styles.container, StyleSheet.absoluteFill]}>
             <Image source={require('../../assets/logo.png')} style={styles.logo}/>
@@ -61,43 +29,25 @@ const RegisterScreen = () => {
 
             <CustomInputField isPassword={false} placeHolder="Name" value={name}
                               setValue={(text) => setName(text)}/>
+
             <CustomInputField style={{marginTop: 20,}} isPassword={false} placeHolder="Email" value={email}
                               setValue={(text) => setEmail(text)}/>
+
             <CustomInputField style={{marginTop: 20,}} isPassword={true} placeHolder="Password" value={password}
                               setValue={(text) => setPassword(text)}/>
 
-
-            <TouchableOpacity style={[styles.button, {
-                marginTop: 20,
-            }]} onPress={handleLogin}>
-                <Text style={styles.buttonText}>Login</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={onPressForgotPassword}>
-                <Text style={styles.hintText}>Forgot Password?</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity onPress={handleLoginWithGoogle}>
-                <Image source={require('../../assets/icon_gmail.png')} style={{
-                    width: 44,
-                    marginTop: 20,
-                    alignSelf: 'center'
-                }}/>
-                <Text style={[styles.buttonText, {marginLeft: 8}]}>Sign in with Gmail</Text>
-            </TouchableOpacity>
+            <CustomButton text="Register" handleClick={handelSignUp}/>
 
             <View style={{
-                flexDirection: 'row',
+                flexDirection: 'column',
                 alignItems: 'center',
             }}>
-                <Text style={styles.hintText}>
-                    Don't have an account?
+                <Text style={[styles.hintText, {marginTop: 30}]}>
+                    By registering you agree to
                 </Text>
-                <TouchableOpacity onPress={onPressSignUp}>
-                    <Text style={[styles.textClick, {marginStart: 5}]}>
-                        Create a new account
-                    </Text>
-                </TouchableOpacity>
+                <Text style={[styles.textClick, {marginStart: 5}]}>
+                    our Terms of Use and Privacy Policy
+                </Text>
             </View>
 
         </View>
@@ -131,29 +81,11 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         fontFamily: 'Roboto',
     },
-    button: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 16,
-        paddingHorizontal: 24,
-        gap: 8,
-        width: '100%',
-        height: 56,
-        backgroundColor: '#46CDD2',
-        borderRadius: 100,
-    },
-    buttonText: {
-        color: '#FFFFFF',
-        fontSize: 16,
-        fontWeight: '400',
-    },
     textClick: {
         fontFamily: 'Roboto',
         fontStyle: 'normal',
         fontWeight: '800',
-        marginTop: 16,
+        marginTop: 10,
         fontSize: 12,
         lineHeight: 18,
         color: 'rgba(0, 0, 0, 0.6)',

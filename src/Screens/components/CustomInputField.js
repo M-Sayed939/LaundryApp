@@ -16,24 +16,15 @@ const styles = StyleSheet.create({
 });
 
 
-const CustomInputFiled = ({
-                              value,
-                              setValue,
-                              placeHolder,
-                              isPassword,
-                              placeholderTextColor = "#9b9b9b",
-                              style
-                          }) => {
-    return (
-        <TextInput
+const CustomInputFiled = ({value, setValue, placeHolder, isPassword, placeholderTextColor = "#9b9b9b", style}) => {
+    return (<TextInput
             style={[styles.input, style]}
             placeholder={placeHolder}
             placeholderTextColor={placeholderTextColor}
             secureTextEntry={isPassword}
             onChangeText={(text) => setValue(text)}
             value={value}
-        />
-    )
+        />)
 };
 
 export default CustomInputFiled;
