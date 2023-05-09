@@ -19,7 +19,7 @@ const LoginScreen = ({navigation}) => {
         signInWithEmailAndPassword(auth, email, password)
             .then((user) => {
                 console.log(user)
-                navigation.navigate('HomeScreen')
+                navigation.navigate('HomeScreen');
             })
             .catch((error) => {
                 console.log(error.message)
@@ -47,6 +47,7 @@ const LoginScreen = ({navigation}) => {
                 const token = credential.accessToken;
                 const user = result.user;
                 // handle success
+                navigation.navigate('HomeScreen');
             })
             .catch((error) => {
                 const errorCode = error.code;
