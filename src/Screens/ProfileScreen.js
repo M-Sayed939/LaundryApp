@@ -2,6 +2,8 @@ import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, StyleSheet, TextInput} from 'react-native';
 import DatePicker from 'react-native-datepicker';
 import CustomInputFiled from "../components/CustomInputFiled";
+import {firestore} from '../firebase';
+import firebase from "firebase/compat";
 
 const ProfileScreen = () => {
     const [name, setName] = useState('XXXxx');
@@ -14,9 +16,18 @@ const ProfileScreen = () => {
         setEditable(true);
     };
 
-    const handleSavePress = () => {
+    const handleSavePress = async () => {
         if (validateBirthdate()) {
             setEditable(false);
+            try {
+                const userRef = firestore.collection('users').doc(firebase.auth.currentUser.uid);
+                await userRef.set({
+                    name, email,phoneNumber,birthdate,
+                });
+                console.log('Profile Updated Successfully <3');
+            } catch (error) {
+                console.error('Error in updating!! :',error);
+            }
         } else {
             alert('You must be at least 18 years old to use this app.');
         }
