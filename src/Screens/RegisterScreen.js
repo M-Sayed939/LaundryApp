@@ -1,16 +1,28 @@
 import React, {useState} from 'react';
-import {StyleSheet, View, Image, Text, Alert} from 'react-native';
+import {StyleSheet, View, Image, Text, Alert, ScrollView} from 'react-native';
 import {createUserWithEmailAndPassword} from "firebase/auth";
 import {auth} from "../firebase/firebase";
 import CustomInputField from "./components/CustomInputField";
 import CustomButton from "./components/CustomButton";
 
-const RegisterScreen = ({ navigation }) => {
+const RegisterScreen = ({navigation}) => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const emailRegex = /^\S+@\S+\.\S+$/;
+    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
 
     const handelSignUp = () => {
+        if (!emailRegex.test(email)) {
+            Alert.alert('Invalid email');
+            return;
+        }
+
+        if (!passwordRegex.test(password)) {
+            Alert.alert('Invalid password');
+            return;
+        }
+
         createUserWithEmailAndPassword(auth, email, password)
             .then((user) => {
                 console.log(user)
@@ -22,34 +34,36 @@ const RegisterScreen = ({ navigation }) => {
     };
 
     return (
-        <View style={[styles.container, StyleSheet.absoluteFill]}>
-            <Image source={require('../../assets/logo.png')} style={styles.logo}/>
-            <Text style={styles.title}>New Account</Text>
+        <ScrollView style={[StyleSheet.absoluteFill]}>
+            <View style={styles.container}>
+                <Image source={require('../../assets/logo.png')} style={styles.logo}/>
+                <Text style={styles.title}>New Account</Text>
 
-            <CustomInputField isPassword={false} placeHolder="Name" value={name}
-                              setValue={(text) => setName(text)}/>
+                <CustomInputField isPassword={false} placeHolder="Name" value={name}
+                                  setValue={(text) => setName(text)}/>
 
-            <CustomInputField style={{marginTop: 20,}} isPassword={false} placeHolder="Email" value={email}
-                              setValue={(text) => setEmail(text)}/>
+                <CustomInputField style={{marginTop: 20,}} isPassword={false} placeHolder="Email" value={email}
+                                  setValue={(text) => setEmail(text)}/>
 
-            <CustomInputField style={{marginTop: 20,}} isPassword={true} placeHolder="Password" value={password}
-                              setValue={(text) => setPassword(text)}/>
+                <CustomInputField style={{marginTop: 20,}} isPassword={true} placeHolder="Password" value={password}
+                                  setValue={(text) => setPassword(text)}/>
 
-            <CustomButton text="Register" handleClick={handelSignUp}/>
+                <CustomButton text="Register" handleClick={handelSignUp}/>
 
-            <View style={{
-                flexDirection: 'column',
-                alignItems: 'center',
-            }}>
-                <Text style={[styles.hintText, {marginTop: 30}]}>
-                    By registering you agree to
-                </Text>
-                <Text style={[styles.textClick, {marginStart: 5}]}>
-                    our Terms of Use and Privacy Policy
-                </Text>
+                <View style={{
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                }}>
+                    <Text style={[styles.hintText, {marginTop: 30}]}>
+                        By registering you agree to
+                    </Text>
+                    <Text style={[styles.textClick, {marginStart: 5}]}>
+                        our Terms of Use and Privacy Policy
+                    </Text>
+                </View>
+
             </View>
-
-        </View>
+        </ScrollView>
     );
 };
 
@@ -63,6 +77,7 @@ const styles = StyleSheet.create({
     logo: {
         width: 150,
         height: 150,
+        marginTop:40,
         marginVertical: 20,
     },
     title: {
